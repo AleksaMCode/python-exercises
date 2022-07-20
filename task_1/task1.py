@@ -12,7 +12,7 @@ def quadratic_equation(a, b, c):
         determinant *= -1
         re = round(-b / (2 * a), 2)
         im = round(math.sqrt(determinant) / (2 * a), 2)
-
+        # Change the sign of imaginary part if it's negative, so that the order of the solutions is always the same.
         im = im if im > 0 else im * -1
         return complex(re, im), complex(re, -im)
     else:
