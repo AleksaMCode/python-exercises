@@ -2,6 +2,13 @@ import math
 
 
 def quadratic_equation(a, b, c):
+    """
+    Calculates the solution to the quadratic equation using Vieta's formula.
+    :param a: Leading coefficient value in quadratic equation
+    :param b: Coefficient of a polynomial variable of degree one
+    :param c: Coefficient of a polynomial variable of the lowest degree
+    :return: Quadratic equation solution(s)
+    """
     determinant = b * b - 4 * a * c
 
     if a == b == c == 0:
