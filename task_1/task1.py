@@ -9,18 +9,18 @@ def quadratic_equation(a, b, c):
     :param c: Coefficient of a polynomial variable of the lowest degree
     :return: Quadratic equation solution(s)
     """
-    determinant = b * b - 4 * a * c
+    discriminant = b * b - 4 * a * c
 
     if a == b == c == 0:
         return "Quadratic equation has infinitely many solutions."
     elif a == 0:
         return round(c / b, 2)
-    elif determinant < 0:
-        determinant *= -1
+    elif discriminant < 0:
+        discriminant *= -1
         re = round(-b / (2 * a), 2)
-        im = round(math.sqrt(determinant) / (2 * a), 2)
+        im = round(math.sqrt(discriminant) / (2 * a), 2)
         # Change the sign of imaginary part if it's negative, so that the order of the solutions is always the same.
         im = im if im > 0 else im * -1
         return complex(re, im), complex(re, -im)
     else:
-        return round((-b + math.sqrt(determinant)) / (2 * a), 2), round((-b - math.sqrt(determinant)) / (2 * a), 2)
+        return round((-b + math.sqrt(discriminant)) / (2 * a), 2), round((-b - math.sqrt(discriminant)) / (2 * a), 2)
