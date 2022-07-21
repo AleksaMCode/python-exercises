@@ -7,6 +7,11 @@ from problem_7.exceptions import DenominatorZeroException
 
 
 class Fraction:
+    """
+    Implementation of mathematical fractions. Problem of limited precision when numbers such as 1/12, 5/4, 9/35, etc.
+    are represented in a floating point variable type is solved with this class.
+    """
+
     def __init__(self, numerator: int, denominator: int):
 
         if denominator == 0:
