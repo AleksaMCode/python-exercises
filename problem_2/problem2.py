@@ -1,6 +1,3 @@
-import time
-
-
 def fibonacci_recursive(start=0, next_val=1):
     """
     Generator function that calculates next number in Fibonacci sequence using recursion.

@@ -1,6 +1,6 @@
 import csv
 
-from task_2 import task2
+from problem_2 import problem2
 
 
 def read_test_data_from_csv():
@@ -14,12 +14,12 @@ def read_test_data_from_csv():
 
 if __name__ == '__main__':
     value = read_test_data_from_csv()
-    fib_value = task2.fibonacci(1000)
+    fib_value = problem2.fibonacci(1000)
     for i in range(1000):
         print(f"{i + 1} Fibonacci element match: {value[i] == next(fib_value)}")
 
     print()
-    fib_value = task2.fibonacci_recursive()
+    fib_value = problem2.fibonacci_recursive()
     for i in range(900):
         print(f"{i + 1} Fibonacci element match: {value[i] == next(fib_value)}")
 

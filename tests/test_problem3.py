@@ -1,7 +1,7 @@
 import csv
 
 import pytest
-from task_3 import task3
+from problem_3 import problem3
 
 
 def read_test_data_from_csv():
@@ -15,13 +15,13 @@ def read_test_data_from_csv():
 
 @pytest.mark.parametrize("palindrome", read_test_data_from_csv())
 def test_palindrome_check1(palindrome):
-    assert task3.palindrome_check1(palindrome) is True
+    assert problem3.palindrome_check1(palindrome) is True
 
 
 # @pytest.mark.dependency(depends=['test_palindrome_check1'])
 @pytest.mark.parametrize("palindrome", read_test_data_from_csv())
 def test_palindrome_check2(palindrome):
-    assert task3.palindrome_check2(palindrome) is True
+    assert problem3.palindrome_check2(palindrome) is True
 
 
 @pytest.mark.parametrize("word, result",
@@ -29,4 +29,4 @@ def test_palindrome_check2(palindrome):
                           ("I'm a palindrome", False),
                           ])
 def test_palindrome_check(word, result):
-    assert task3.palindrome_check1(word) is result
+    assert problem3.palindrome_check1(word) is result

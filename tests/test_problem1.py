@@ -1,5 +1,5 @@
 import pytest
-from task_1 import task1
+from problem_1 import problem1
 
 test_complex_solutions = [
     (5, 3, 2, (complex(-0.30, 0.56), complex(-0.30, -0.56))),
@@ -19,4 +19,4 @@ test_complex_solutions = [
 
 @pytest.mark.parametrize("a, b, c, expected", test_complex_solutions)
 def test_quadratic_equation(a, b, c, expected):
-    assert task1.quadratic_equation(a, b, c) == expected
+    assert problem1.quadratic_equation(a, b, c) == expected
