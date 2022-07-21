@@ -14,9 +14,11 @@ test_complex_solutions = [
     (5, 0, 5, (complex(0, 1), complex(0, -1))),
     (45, 85, 0, (0, -1.89)),
     (1, 1, 1, (complex(-0.50, 0.87), complex(-0.50, -0.87))),
+    (-5.2, 6.65, 5.65, (1.86, -0.58)),
 ]
 
 
 @pytest.mark.parametrize("a, b, c, expected", test_complex_solutions)
 def test_quadratic_equation(a, b, c, expected):
-    assert problem1.quadratic_equation(a, b, c) == expected
+    result = problem1.quadratic_equation(a, b, c)
+    assert result == expected or result == (expected[1], expected[0])
