@@ -4,8 +4,7 @@ def palindrome_check1(word):
     :param word: String used to check if it's palindrome.
     :return: True if the word is palindrome, otherwise False.
     """
-    rev_word = word[::-1]
-    return rev_word == word
+    return word[::-1] == word
 
 
 def palindrome_check2(word):
