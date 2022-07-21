@@ -10,12 +10,18 @@ class TestFraction(unittest.TestCase):
         [Fraction(37, 13), Fraction(18, 15), Fraction(789, 195)],
         [Fraction(10, 2), Fraction(8, 4), Fraction(28, 4)],
         [Fraction(1, 1), Fraction(15, 32), Fraction(47, 32)],
+        [Fraction(-37, -13), Fraction(18, 15), Fraction(789, 195)],
+        [Fraction(-37, 13), Fraction(18, 15), Fraction(-321, 195)],
+        [Fraction(37, -13), Fraction(18, 15), Fraction(-321, 195)],
     ]
 
     fractions_multiplication = [
         [Fraction(37, 13), Fraction(18, 15), Fraction(666, 195)],
         [Fraction(10, 2), Fraction(8, 4), Fraction(80, 8)],
         [Fraction(1, 1), Fraction(15, 32), Fraction(15, 32)],
+        [Fraction(-37, -13), Fraction(18, 15), Fraction(666, 195)],
+        [Fraction(-37, 13), Fraction(18, 15), Fraction(-666, 195)],
+        [Fraction(37, -13), Fraction(18, 15), Fraction(-666, 195)],
     ]
 
     def test_fraction_reduction(self):
@@ -35,21 +41,19 @@ class TestFraction(unittest.TestCase):
 
     @parameterized.expand(fractions_addition)
     def test_fraction_addition(self, frac1, frac2, expected_value):
-        expected_value = expected_value.get_reduced()
         frac_sum = frac1 + frac2
-        self.assertEqual(expected_value.numerator, frac_sum.numerator)
-        self.assertEqual(expected_value.denominator, frac_sum.denominator)
+        self.assertEqual(expected_value.numerator / expected_value.denominator,
+                         frac_sum.numerator / frac_sum.denominator)
 
     @parameterized.expand(fractions_multiplication)
     def test_fraction_multiplication(self, frac1, frac2, expected_value):
-        expected_value = expected_value.get_reduced()
         frac_mul = frac1 * frac2
-        self.assertEqual(expected_value.numerator, frac_mul.numerator)
-        self.assertEqual(expected_value.denominator, frac_mul.denominator)
+        self.assertEqual(expected_value.numerator / expected_value.denominator,
+                         frac_mul.numerator / frac_mul.denominator)
 
     def test_denominator_zero_exception(self):
         with self.assertRaises(DenominatorZeroException):
-            fraction = Fraction(5, 0)
+            _ = Fraction(5, 0)
 
 
 if __name__ == '__main__':
