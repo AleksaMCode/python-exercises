@@ -1,7 +1,8 @@
 import pytest
 from problem_1 import problem1
+from problem_1.exceptions import InvalidQuadraticEqParam
 
-test_complex_solutions = [
+complex_solutions_test_data = [
     (5, 3, 2, (complex(-0.30, 0.56), complex(-0.30, -0.56))),
     (65, 26, 269, (complex(-0.20, 2.02), complex(-0.20, -2.02))),
     (-45, 13, -89, (complex(0.14, 1.40), complex(0.14, -1.40))),
@@ -17,8 +18,23 @@ test_complex_solutions = [
     (-5.2, 6.65, 5.65, (1.86, -0.58)),
 ]
 
+complex_solutions_exceptions_test_data = [
+    ("-5.2", 6.65, 5.65, (1.86, -0.58)),
+    (-5.2, "6.65", 5.65, (1.86, -0.58)),
+    (-5.2, 6.65, "5.65", (1.86, -0.58)),
+]
 
-@pytest.mark.parametrize("a, b, c, expected", test_complex_solutions)
+
+@pytest.mark.parametrize("a, b, c, expected", complex_solutions_test_data)
 def test_quadratic_equation(a, b, c, expected):
     result = problem1.quadratic_equation(a, b, c)
     assert result == expected or result == (expected[1], expected[0])
+
+
+@pytest.mark.parametrize("a, b, c, expected", complex_solutions_exceptions_test_data)
+def test_quadratic_equation_exception(a, b, c, expected):
+    try:
+        result = problem1.quadratic_equation(a, b, c)
+        assert result == expected or result == (expected[1], expected[0])
+    except InvalidQuadraticEqParam as e:
+        assert type(e) == InvalidQuadraticEqParam

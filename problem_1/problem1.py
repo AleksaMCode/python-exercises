@@ -1,5 +1,7 @@
 import math
 
+from problem_1.exceptions import InvalidQuadraticEqParam
+
 
 def quadratic_equation(a, b, c):
     """
@@ -9,6 +11,11 @@ def quadratic_equation(a, b, c):
     :param c: Coefficient of a polynomial variable of the lowest degree
     :return: Quadratic equation solution(s) in Tuple form
     """
+
+    if (type(a) != int or type(b) != int or type(c) != int) \
+            and (type(a) != float or type(b) != float or type(c) != float):
+        raise InvalidQuadraticEqParam("Parameters must be 'int' or 'float' type")
+
     discriminant = b * b - 4 * a * c
 
     if a == b == c == 0:
