@@ -118,10 +118,3 @@ class Fraction:
 
     def __mul__(self, other: Fraction) -> Fraction:
         return Fraction(self.numerator * other.numerator, self.denominator * other.denominator).get_reduced()
-
-
-if __name__ == "__main__":
-    f = Fraction(-37, -13)
-    ff = Fraction(18, 15)
-    fff = f * ff
-    print(fff)
