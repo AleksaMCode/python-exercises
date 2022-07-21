@@ -7,7 +7,7 @@ def quadratic_equation(a, b, c):
     :param a: Leading coefficient value in quadratic equation
     :param b: Coefficient of a polynomial variable of degree one
     :param c: Coefficient of a polynomial variable of the lowest degree
-    :return: Quadratic equation solution(s)
+    :return: Quadratic equation solution(s) in Tuple form
     """
     discriminant = b * b - 4 * a * c
 
