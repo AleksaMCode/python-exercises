@@ -60,7 +60,7 @@ class TestUserIot(unittest.TestCase):
         Test if it's possible to add device with an already existing sn.
         """
         with self.assertRaises(DuplicateDeviceException):
-            _ = IotDevice(213,121)
+            _ = IotDevice(TestUserIot.devices_test_data[0][0], TestUserIot.devices_test_data[0][1])
 
 
 if __name__ == '__main__':
