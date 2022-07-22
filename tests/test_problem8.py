@@ -1,6 +1,6 @@
 import unittest
 import os
-
+from hamcrest import assert_that, equal_to
 from problem_8.exceptions import *
 from problem_8.problem8 import IotDevice
 from parameterized import parameterized
@@ -51,13 +51,13 @@ class TestUserIot(unittest.TestCase):
         """
         Tests if it's possible to write devices to a csv.
         """
-        self.assertEqual(True, IotDevice.write(TestUserIot.environment_variable_name))
+        assert_that(IotDevice.write(TestUserIot.environment_variable_name), equal_to(True))
 
     def test1_3(self):
         """
         Tests if it's possible to read devices from a csv.
         """
-        self.assertEqual(True, IotDevice.read(TestUserIot.environment_variable_name))
+        assert_that(IotDevice.read(TestUserIot.environment_variable_name), equal_to(True))
 
     def test1_4(self):
         """
