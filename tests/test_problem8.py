@@ -19,11 +19,6 @@ class TestUserIot(unittest.TestCase):
         [12414, 347],
     ]
 
-    email_test_data = [
-        "user1@gmail.com", "user2@gmail.com", "user3@gmail.com", "user4@gmail.com", "user5@gmail.com",
-        "user6@gmail.com", "user7@gmail.com"
-    ]
-
     @parameterized.expand(devices_test_data)
     def test1_1(self, sn, id):
         """
