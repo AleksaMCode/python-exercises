@@ -111,3 +111,7 @@ class TestUserIot(unittest.TestCase):
         """
         with self.assertRaises(EmailException):
             UserIot.update_user("new_password", "user1000@gmail.com", 334)
+
+
+if __name__ == '__main__':
+    unittest.main()
