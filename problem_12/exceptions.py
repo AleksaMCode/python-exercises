@@ -23,3 +23,8 @@ class FileIsMissingException(BaseException):
 class PasswordFetchException(BaseException):
     def __init__(self, message):
         self.message = message
+
+
+class EmptyCsvFileException(BaseException):
+    def __init__(self, message):
+        self.message = message

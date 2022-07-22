@@ -47,7 +47,11 @@ class IotDevice:
         if not os.path.exists(filename):
             raise FileIsMissingException(f"File '{filename}' doesn't exist.")
 
+        if os.stat(filename).st_size == 0:
+            raise EmptyCsvFileException(f"File '{filename}' is empty.")
+
         devices = dict()
+
         with open(filename, 'r') as file:
             csv_reader = csv.reader(file, delimiter=',')
             for row in csv_reader:

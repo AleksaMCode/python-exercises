@@ -100,6 +100,9 @@ class UserIot:
         """
         import csv
 
+        if os.stat(filename).st_size == 0:
+            raise EmptyCsvFileException(f"File '{filename}' is empty.")
+
         users = dict()
         with open(filename, 'r') as file:
             csv_reader = csv.reader(file, delimiter=',')
