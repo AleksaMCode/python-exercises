@@ -1,4 +1,5 @@
 import unittest
+import os
 
 from problem_8.exceptions import *
 from problem_8.problem8 import IotDevice
@@ -8,7 +9,8 @@ unittest.TestLoader.sortTestMethodsUsing = None
 
 
 class TestUserIot(unittest.TestCase):
-    environment_variable = "DEVICES_PATH"
+    environment_variable_name = "DEVICES_PATH"
+    environment_variable_value = "devices.csv"
     devices_test_data = [
         [213, 121],
         [123, 152],
@@ -18,6 +20,14 @@ class TestUserIot(unittest.TestCase):
         [2134, 75],
         [12414, 347],
     ]
+
+    @classmethod
+    def setUpClass(cls):
+        os.environ[TestUserIot.environment_variable_name] = TestUserIot.environment_variable_value
+
+    @classmethod
+    def tearDownClass(cls):
+        del os.environ[TestUserIot.environment_variable_name]
 
     @parameterized.expand(devices_test_data)
     def test1_1(self, sn, id):
@@ -30,13 +40,13 @@ class TestUserIot(unittest.TestCase):
         """
         Tests if it's possible to write devices to a csv.
         """
-        self.assertEqual(True, IotDevice.write(TestUserIot.environment_variable))
+        self.assertEqual(True, IotDevice.write(TestUserIot.environment_variable_name))
 
     def test1_3(self):
         """
         Tests if it's possible to read devices from a csv.
         """
-        self.assertEqual(True, IotDevice.read(TestUserIot.environment_variable))
+        self.assertEqual(True, IotDevice.read(TestUserIot.environment_variable_name))
 
     def test1_4(self):
         """
@@ -50,4 +60,8 @@ class TestUserIot(unittest.TestCase):
         Test if it's possible to add device with an already existing sn.
         """
         with self.assertRaises(DuplicateDeviceException):
-            _ = IotDevice(TestUserIot.users_test_data[0][0], TestUserIot.users_test_data[0][1])
+            _ = IotDevice(213,121)
+
+
+if __name__ == '__main__':
+    unittest.main()
