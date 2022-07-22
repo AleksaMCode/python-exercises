@@ -4,7 +4,7 @@ import os
 
 def validate_unique_sn(func):
     def decorator(*args, **kwargs):
-        if args[1] not in IotDevice.devices_list:
+        if str(args[1]) not in IotDevice.devices_list:
             return func(*args, **kwargs)
         else:
             raise DuplicateDeviceException(f"Device with sn '{args[1]}' already exists.")
