@@ -14,10 +14,10 @@ def validate_unique_sn(func):
 
 def validate_environment_variable(func):
     def decorator(*args, **kwargs):
-        if args[1] in os.environ:
+        if args[0] in os.environ:
             return func(*args, **kwargs)
         else:
-            raise EnvironmentVariableException(f"Variable '{args[1]}' doesn't exist on you system.")
+            raise EnvironmentVariableException(f"Variable '{args[0]}' doesn't exist on you system.")
 
     return decorator
 
@@ -39,12 +39,13 @@ class IotDevice:
         return f"{self.sn},{self.id}"
 
     @staticmethod
+    @validate_environment_variable
     def read(environment_variable: str):
         import csv
         filename = os.environ[environment_variable]
 
-        if os.path.exists(filename):
-            raise FileIsMissingException(f"File {filename} doesn't exist.")
+        if not os.path.exists(filename):
+            raise FileIsMissingException(f"File '{filename}' doesn't exist.")
 
         devices = dict()
         with open(filename, 'r') as file:
