@@ -1,49 +1,61 @@
-from functools import wraps
+def validate_unique_sn_decorator(func):
+    def inner(*args, **kwargs):
+        if args[1] not in IotDevice.devices_list:
+            return func(*args, **kwargs)
+        else:
+            raise Exception(f"Device with sn '{args[1]}' already exists.")
+
+    return inner
 
 
-def decorator_function(num):
+class IotDevice:
+    devices_list = dict()
 
-        def inner_func(func):
-            @wraps(func)
-            def wrapper(*args, **kwargs):
-                result = func(*args, **kwargs)
-                result = result + num
-                return result
-
-            return wrapper
-
-        return inner_func
-
-
-class Device:
-    devices_list = []
-
-    def __init__(self, sn, id):
+    @validate_unique_sn_decorator
+    def __init__(self, sn: int, id: int):
         self.sn = sn
         self.id = id
 
+        if len(IotDevice.devices_list) == 0:
+            IotDevice.devices_list = {sn: id}
+        else:
+            IotDevice.devices_list[sn] = id
+
     def __str__(self):
         return f"{self.sn},{self.id}"
-
-    def write(self):
-        import csv
-        import os
-        devices_path = os.environ['DEVICES_PATH']
-        with open(devices_path, 'w') as f:
-            writer = csv.writer(f)
-            writer.writerow(self.__str__())
 
     @staticmethod
     def read():
         import csv
         import os
-        devices_path = os.environ['DEVICES_PATH']
-        with open(devices_path, 'r') as file:
-            devices = csv.reader(file)
-            for device in devices:
-                device_split = device.strip().split(',')
-                Device.devices_list.append(Device(device_split[0], Device(device_split[1]))
+        filename = os.environ['DEVICES_PATH']
+
+        devices = dict()
+        with open(filename, 'r') as file:
+            csv_reader = csv.reader(file, delimiter=',')
+            for row in csv_reader:
+                if len(row):
+                    if len(devices) == 0:
+                        devices = {row[0]: row[1]}
+                    elif devices and row[0] not in devices:
+                        devices.update({row[0]: row[1]})
+                    # Duplicate entries from csv file will be ignored.
+
+        IotDevice.devices_list = devices
+        return True
 
     @staticmethod
-    @decorator_function(5)
-    def function_to(sn):
+    def write():
+        """
+        Flushes all the data stored to a csv file.
+        """
+        import csv
+        import os
+        filename = os.environ['DEVICES_PATH']
+
+        with open(filename, 'w', newline='') as f:
+            writer = csv.writer(f)
+            for key, value in IotDevice.devices_list.items():
+                writer.writerow([key, value])
+
+        return True
