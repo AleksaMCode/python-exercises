@@ -1,17 +1,31 @@
-def validate_unique_sn_decorator(func):
-    def inner(*args, **kwargs):
+from problem_8.exceptions import *
+import os
+
+
+def validate_unique_sn(func):
+    def decorator(*args, **kwargs):
         if args[1] not in IotDevice.devices_list:
             return func(*args, **kwargs)
         else:
-            raise Exception(f"Device with sn '{args[1]}' already exists.")
+            raise DuplicateDeviceException(f"Device with sn '{args[1]}' already exists.")
 
-    return inner
+    return decorator
+
+
+def validate_environment_variable(func):
+    def decorator(*args, **kwargs):
+        if args[1] in os.environ:
+            return func(*args, **kwargs)
+        else:
+            raise EnvironmentVariableException(f"Variable '{args[1]}' doesn't exist on you system.")
+
+    return decorator
 
 
 class IotDevice:
     devices_list = dict()
 
-    @validate_unique_sn_decorator
+    @validate_unique_sn
     def __init__(self, sn: int, id: int):
         self.sn = sn
         self.id = id
@@ -25,10 +39,12 @@ class IotDevice:
         return f"{self.sn},{self.id}"
 
     @staticmethod
-    def read():
+    def read(environment_variable: str):
         import csv
-        import os
-        filename = os.environ['DEVICES_PATH']
+        filename = os.environ[environment_variable]
+
+        if os.path.exists(filename):
+            raise FileIsMissingException(f"File {filename} doesn't exist.")
 
         devices = dict()
         with open(filename, 'r') as file:
@@ -45,13 +61,13 @@ class IotDevice:
         return True
 
     @staticmethod
-    def write():
+    @validate_environment_variable
+    def write(environment_variable):
         """
         Flushes all the data stored to a csv file.
         """
         import csv
-        import os
-        filename = os.environ['DEVICES_PATH']
+        filename = os.environ[environment_variable]
 
         with open(filename, 'w', newline='') as f:
             writer = csv.writer(f)
