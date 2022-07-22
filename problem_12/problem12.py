@@ -14,7 +14,7 @@ def validate_uniqe_email_decorator(func):
         elif UserIot.user_dict and args[0] not in UserIot.user_dict or len(UserIot.user_dict) == 0:
             return func(*args, **kwargs)
         else:
-            raise EmailDuplicateException(f"User with '{email}' already exists.")
+            raise EmailDuplicateException(f"User with '{args[0]}' already exists.")
 
     return inner
 
