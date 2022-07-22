@@ -44,3 +44,7 @@ def test_rectangle_draw_type_error(size):
 def test_square_draw_type_error(size):
     with pytest.raises(TypeError):
         assert problem5.square_draw(size)
+
+
+def test_pattern_size():
+    assert problem5.square_draw(1) is False and problem5.rectangle_draw(2) is False
