@@ -1,20 +1,17 @@
 import base64
+import hashlib
 import re
 import os
-from passlib.context import CryptContext
 
 from problem_12.exceptions import *
 
 
-def validate_uniqe_email_decorator(func):
+def validate_unique_email_decorator(func):
     def inner(*args, **kwargs):
-        if len(UserIot.user_dict) == 0:
-            UserIot.user_dict = {args[0]: [args[1], args[2]]}
-            return func(*args, **kwargs)
-        elif UserIot.user_dict and args[0] not in UserIot.user_dict or len(UserIot.user_dict) == 0:
+        if args[1] not in UserIot.user_dict:
             return func(*args, **kwargs)
         else:
-            raise EmailDuplicateException(f"User with '{args[0]}' already exists.")
+            raise EmailException(f"User with email '{args[1]}' already exists.")
 
     return inner
 
@@ -31,19 +28,20 @@ def validate_file_decorator(func):
 
 def validate_password_decorator(func):
     def inner(*args, **kwargs):
-        if UserIot.digest.verify(args[0], args[1]):
+        if UserIot.verify_hash(args[0], args[1]):
             return func(*args, **kwargs)
         else:
-            raise WrongPasswordException("Entered passwords doesn't match the existing password.")
+            raise WrongPasswordException(f"Entered passwords '{args[0]}' doesn't match the existing password.")
 
     return inner
 
 
 def validate_email_decorator(func):
-    regex = r'^[a-z0-9]+[\._]?[a-z0-9]+[@]\w+[.]\w{2,3}$'
+    regex = r'^[a-z0-9!#$%&\'*+/=?^_`{|}~-]+(?:\.[a-z0-9!#$%&\'*+/=?^_`{|}~-]+)*@(?:[a-z0-9](?:[a-z0-9-]*' \
+            r'[a-z0-9])?\.)+[a-z0-9](?:[a-z0-9-]*[a-z0-9])?$'
 
     def inner(*args, **kwargs):
-        email_str = args[0]
+        email_str = args[1]
         if re.search(regex, email_str):
             return func(*args, **kwargs)
         else:
@@ -52,41 +50,46 @@ def validate_email_decorator(func):
     return inner
 
 
-def update_csv(users):
-    import csv
-    import os
-    path = "users.csv"
-    os.remove(path)
-    with open(path, 'a', newline='') as f:
-        for key in users.keys():
-            writer = csv.writer(f)
-            writer.writerow([key, users[key][0], users[key][1]])
-
-
 class UserIot:
     user_dict = dict()
-    digest = CryptContext(schemes=["bcrypt"], deprecated="auto")
 
     @validate_email_decorator
-    @validate_uniqe_email_decorator
+    @validate_unique_email_decorator
     def __init__(self, email: str, password: str, rol: int):
         self.email = email
-        self.password = base64.b64encode(UserIot.hash_the_password(password).encode('utf-8'))
+        self.password = UserIot.convert_to_base64(UserIot.hash_the_password(password))
         self.rol = rol
+
+        if len(UserIot.user_dict) == 0:
+            UserIot.user_dict = {email: [self.password, rol]}
+        else:
+            UserIot.user_dict[email] = [self.password, rol]
 
     @staticmethod
     @validate_email_decorator
-    def update_user(email: str, password: str, rol: int):
+    def update_user(password: str, email: str, rol: int):
         """
-        Updates existing user by using email as a key value.
-        :param email:
-        :param password:
-        :return:
+        Updates user information using the email as key.
+        :param password: User's new password
+        :param email: User's existing email
+        :param rol: User's new rol
         """
         if UserIot.user_dict and len(UserIot.user_dict) != 0 and email in UserIot.user_dict:
-            UserIot.user_dict[email] = [password, rol]
+            UserIot.user_dict[email] = [UserIot.convert_to_base64(UserIot.hash_the_password(password)), rol]
         else:
-            raise EmailDuplicateException(f"User with '{email}' doesn't exists.")
+            raise EmailException(f"User with '{email}' doesn't exists.")
+
+    @staticmethod
+    def hash_the_password(password: str):
+        return hashlib.sha256(password.encode()).hexdigest()
+
+    @staticmethod
+    def convert_to_base64(string):
+        return base64.b64encode(string.encode()).decode('ascii').strip()
+
+    @staticmethod
+    def verify_hash(plain_password: str, hashed_password: str):
+        return UserIot.convert_to_base64(UserIot.hash_the_password(plain_password)) == hashed_password
 
     @staticmethod
     @validate_file_decorator
@@ -127,66 +130,15 @@ class UserIot:
         return True
 
     @staticmethod
+    def fetch_password_from_email(email: str):
+        if len(UserIot.user_dict) == 0:
+            raise PasswordFetchException(f"User dictionary is empty.")
+        elif email not in UserIot.user_dict:
+            raise PasswordFetchException(f"Email '{email} doesn't exist.")
+        else:
+            return UserIot.user_dict[email][0]
+
+    @staticmethod
     @validate_password_decorator
     def login_simulation(plain_password: str, hashed_password: str):
         return "Success!"
-
-
-# if __name__ == '__main__':
-#     n = -1
-#
-#     while n < 0:
-#         n = int(input("Enter number of Users: "))
-#
-#     i = 0
-#     while i < n:
-#         try:
-#             print(f"User {i + 1}")
-#             email = str(input("Enter Email: "))
-#             password = str(input("Enter Password: "))
-#             rol = int(input("Enter rol: "))
-#             user = UserIot(email, password, rol)
-#             user.write()
-#             i += 1
-#         except Exception as e:
-#             print(e)
-#
-#     n = -1
-#
-#     while n < 0:
-#         n = int(input("Enter number of Users for update: "))
-#
-#     users = UserIot.read()
-#     i = 0
-#     while i < n:
-#         try:
-#             email = str(input("Enter Email: "))
-#             validate_email(email)
-#             password = str(input("Enter Password: "))
-#             rol = int(input("Enter rol: "))
-#
-#             if email in users:
-#                 users.update({email: [base64.b64encode(UserIot.hash_the_password(password).encode('utf-8')), rol]})
-#             else:
-#                 print(f"Email {email} doesn't exist.")
-#
-#             i += 1
-#         except Exception as e:
-#             print(e)
-#
-# update_csv(users)
-#
-# print("Let's match user and password:")
-# while True:
-#     email = str(input("Enter Email: "))
-#     password = str(input("Enter Password: "))
-#
-#     try:
-#         validate_email(email)
-#         if email in users:
-#             UserIot.validate_password(password, base64.b64decode(users[email][0]))
-#             print("Passwords match.")
-#         else:
-#             print(f"Email {email} doesn't exist.")
-#     except Exception as e:
-#         print(e)
