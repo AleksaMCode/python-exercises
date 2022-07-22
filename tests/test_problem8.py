@@ -29,6 +29,17 @@ class TestUserIot(unittest.TestCase):
     def tearDownClass(cls):
         del os.environ[TestUserIot.environment_variable_name]
 
+    def test1_0(self):
+        """
+        Test if the Exception is raised when trying to read from an empty CSV file.
+        :return:
+        """
+        with open(TestUserIot.environment_variable_value, 'w'):
+            pass
+
+        with self.assertRaises(EmptyCsvFileException):
+            _ = IotDevice.read(TestUserIot.environment_variable_name)
+
     @parameterized.expand(devices_test_data)
     def test1_1(self, sn, id):
         """

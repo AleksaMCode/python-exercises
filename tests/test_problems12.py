@@ -24,6 +24,17 @@ class TestUserIot(unittest.TestCase):
         "user6@gmail.com", "user7@gmail.com"
     ]
 
+    def test0(self):
+        """
+        Test if the Exception is raised when trying to read from an empty CSV file.
+        :return:
+        """
+        with open(TestUserIot.filename, 'w'):
+            pass
+
+        with self.assertRaises(EmptyCsvFileException):
+            _ = UserIot.read(TestUserIot.filename)
+
     @parameterized.expand(email_test_data)
     def test1_0(self, email):
         """
