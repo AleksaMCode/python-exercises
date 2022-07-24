@@ -28,13 +28,13 @@ complex_solutions_exceptions_test_data = [
 @pytest.mark.parametrize("a, b, c, expected", complex_solutions_test_data)
 def test_quadratic_equation(a, b, c, expected):
     result = problem1.quadratic_equation(a, b, c)
-    assert result == expected or result == (expected[1], expected[0])
+    assert result == expected or result == tuple(reversed(expected))
 
 
 @pytest.mark.parametrize("a, b, c, expected", complex_solutions_exceptions_test_data)
 def test_quadratic_equation_exception(a, b, c, expected):
     try:
         result = problem1.quadratic_equation(a, b, c)
-        assert result == expected or result == (expected[1], expected[0])
+        assert result == expected or result == tuple(reversed(expected))
     except InvalidQuadraticEqParam as e:
         assert type(e) == InvalidQuadraticEqParam
