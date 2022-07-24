@@ -10,6 +10,9 @@ __pycache__/
 users.csv
 devices.csv
 
+# Directory
+orm/
+
 # Distribution / packaging
 .Python
 build/
