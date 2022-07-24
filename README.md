@@ -12,4 +12,4 @@
     <li><p align="justify"><a href="problem_5/problem5.py">PROBLEM 7</a>: Implementation of mathematical fractions</p></li>
 </ul>
 
-<p align="justify">Project aslo contains test for the problem solutions. I've used combination of <i>pytest</i>, <i>unittest</i> and I've used <i>PyHamcrest</i> for Hamcrest matchers. All of the tests are located in the <a href="/tests">test</a> folder.</p>
+<p align="justify">Project also contains test for the problem solutions. I've used combination of <i>pytest</i>, <i>unittest</i> and I've used <i>PyHamcrest</i> for Hamcrest matchers. All of the tests are located in the <a href="/tests">test</a> folder.</p>
