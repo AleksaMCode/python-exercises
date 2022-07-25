@@ -1,9 +1,10 @@
 import math
 
 from problem_1.exceptions import InvalidQuadraticEqParam
+from typing import Union
 
 
-def quadratic_equation(a, b, c):
+def quadratic_equation(a, b, c) -> Union[str, tuple[complex, complex], tuple[int, int]]:
     """
     Calculates the solution to the quadratic equation using Vieta's formula.
     :param a: Leading coefficient value in quadratic equation
