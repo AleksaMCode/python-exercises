@@ -20,7 +20,7 @@ class Fraction:
         self.numerator: int = numerator
         self.denominator: int = denominator
 
-        # Move the negative up to the numerator if the denominator is negative
+        # Move the negative value up to the numerator if the denominator is negative
         if denominator < 0:
             numerator *= -1
             denominator *= -1
