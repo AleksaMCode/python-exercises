@@ -20,6 +20,12 @@ class ListAdder(Adder):
     #     self.__collection__ = value
 
     def add(self, x: list, y: list):
+        '''
+        Adds two lists together and stores the resulting list as class attribute.
+        :param x: First list
+        :param y: Second list
+        :return: Resulting list
+        '''
         if x is not None and y is not None:
             self.collection = x + y
             return self.collection
@@ -35,6 +41,12 @@ class DictAdder(Adder):
             raise BadCollectionType("Collection passed to __init__ wasn't a list.")
 
     def add(self, x, y):
+        '''
+        Adds two dictionaries together and stores the resulting dictionary as class attribute.
+        :param x: First dictionary
+        :param y: Second dictionary
+        :return: Resulting dictionary
+        '''
         if x and y is not None:
             if isinstance(x, dict) and isinstance(y, dict):
                 self.collection = x.extends(y)
