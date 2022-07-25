@@ -41,6 +41,11 @@ class IotDevice:
     @staticmethod
     @validate_environment_variable
     def read(environment_variable: str):
+        '''
+        Reads data from the csf file.
+        :param environment_variable: Environment variable used to get location of the csv file
+        :return: True if reading was successful, otherwise Exception is raised.
+        '''
         import csv
         filename = os.environ[environment_variable]
 
@@ -68,9 +73,11 @@ class IotDevice:
     @staticmethod
     @validate_environment_variable
     def write(environment_variable):
-        """
+        '''
         Flushes all the data stored to a csv file.
-        """
+        :param environment_variable: Environment variable used to get location of the csv file
+        :return: True if writing was successful, otherwise Exception is raised
+        '''
         import csv
         filename = os.environ[environment_variable]
 

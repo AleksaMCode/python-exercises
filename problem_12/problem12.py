@@ -95,8 +95,9 @@ class UserIot:
     @validate_file_decorator
     def read(filename: str):
         """
-        Loads all the users from the csv file.
-        :param filename: Name of the csv file.
+        Reads all the users from the csv file.
+        :param filename: Name of the csv file
+        :return True if reading was successful, otherwise Exception is raised
         """
         import csv
 
@@ -121,8 +122,8 @@ class UserIot:
     def write(filename: str):
         """
         Flushes all the data stored on the users to a csv file.
-        :param filename: Name of the csv file.
-        :return:
+        :param filename: Name of the csv file
+        :return: True if writing was successful, otherwise Exception is raised
         """
         import csv
         with open(filename, 'w', newline='') as f:
