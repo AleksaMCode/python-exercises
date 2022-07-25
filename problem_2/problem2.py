@@ -21,9 +21,9 @@ def fibonacci(n: int) -> int:
     """
     if n <= 0:
         raise InvalidNumberOfFibonacciNumbers(f"{n} isn't a valid number of Fibonacci numbers.")
-    elif n >= 1_000:
+    elif n > 1_000:
         raise InvalidNumberOfFibonacciNumbers(f"{n} isn't a valid number of Fibonacci numbers. Upper limit is set to "
-                                              f"2,000 elements.")
+                                              f"1,000 elements.")
 
     start, next_val = 0, 1
     for _ in range(n):
