@@ -1,4 +1,4 @@
-<img width="150" align="right" title="PI icon" src="./resources/python.png" alt_text="[Python icons created by Freepik - Flaticon](https://www.flaticon.com/free-icon/python_2621303)"></img>
+<img width="150" align="right" title="Python icon" src="./resources/python.png" alt_text="[Python icons created by Freepik - Flaticon](https://www.flaticon.com/free-icon/python_2621303)"></img>
 
 # Python problems
 <p align="justify">Collection of solved programing problems used to lear python language during my internship @ <a href="https://www.rt-rk.com/">RT-RK</a>.</p>
